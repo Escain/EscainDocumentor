@@ -1,0 +1,88 @@
+<!--
+This file is part of Escain Documentor tool
+
+Escain Documentor is free software: you can redistribute it and/or modify 
+it under ther terms of the GNU General Public License as published by 
+the Free Software Foundation, either version 3 of the License, or 
+(at your option) any later version.
+
+Escain Documentor is distributed in the hope that it will be useful, 
+but WITHOUT ANY WARRANTY; without even the implied warranty of 
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License 
+along with Escain Documentor. If not, see <https://www.gnu.org/licenses/>.
+
+Author: Adrian Maire escain (at) gmail.com
+-->
+
+<document>
+	<title>Documentor</title>
+	<version>0.1</version>
+	<author>Adrian Maire</author>
+
+	<dictionary>
+	<term name="XML">Exchange Markup Language, structured formal and human-readable format.</term>
+	</dictionary>
+	
+	<index/>
+
+	<glossary/>
+
+	<header-1 title="Introduction">
+		<p>Documentation for an organization or project can become quickly a challenge: many people collaborate by sharing knowledge about a huge amount of topics, and finding quickly up-to-date information require well structured and maintained documents. </p>
+		<p>In software development, this challenge is even more complex because of the nature of how normal work-flow usually happens. Some specific requirements for software documentation are described in following section.</p>
+		<header-2 title="Benefits of using Documentor">
+		<p>This approach to documentation bring the following advantages:</p>
+		<ul>
+		<li><b>Versioning:</b><br/> Software is developed using vesioning tool like git, those tools are good at keeping track of changes on text files like code sources, but they usually don't manage properly binary files like most enriched text editors (.odt/.docx, pictures, etc.). Documentation need to be versioned, allowing to see what specific change is applied in each modification.<br/>
+		Documentor works with an xml format, allowing versioning tools to track changes in documentation.
+		</li>
+		<li><b>Code and documentation version mapping:</b><br/> Online documentation tools like wikis track changes, but the relation between the code version and documentation version is lost: to illustrate this, let suppose a huge refactoring at version 10 of a software, few months later, a bug requires a security fix for a previous version. How to get to the documentation previous to the refactoring? Obviously, seeking the modification dates is a possibility, however this is not ideal. The versionning should keep both: the code, and the related documentation.<br/>
+		Documentor allows the documentation to be tracked with the same versioning tool than the code, in consequence, making a checkout of a previous commit or release, also provide access to the corresponding documentation. Another branch or release can be checkout separately to have more up-to-date documentation, or even to perform easy "diff"s to highlight changes.
+		</li>
+		<li><b>Enriched content:</b><br/> It's obvious that enriched documentation helps: UML diagrams, pictures, titles, lists, tables.. Documentation must allow enriched content.</li>
+		<li><b>Local and remote access:</b><br/>Internet is powerful, but local access is still convenient in many situations: for example having no internet access while traveling.<br/>Documentor uses files, a repo can be cloned and then the file accessed without internet access. Documentor works with standard and well known XSLT and xhtml standars, consequently, documentation can be accessed easily via a web server/browser without having to clone the project.</li>
+		<li><b>Access before to commit:</b><br/>A consequence of using versioning tools is that the content is not updated on the server until commited. In some circumstances, it is useful to access recently written documentation about some ongoing task, before it is pushed to the server.<br/> Documentor mechanism allows to work on local files while working on it, and also online with a browser without cloning the repository.</li>
+		<li><b>Customizable apparence:</b><br/>Documentor files do not specify any style, the XSLT and CSS files configures fully the apparence, allowing to display more practical format on local files, better styled documentation on the web-page (e.g. if served publicly), and even to generate automatically pdf or other similar formats (xsl:fo).</li>
+		<li><b>Open tools and protocols: </b><br/>Many solutions bring a good value, but they offer only privative solutions which bind your documentation and your organization/project to that company. Let imagine that you contract a 1-year license for documentation platform X, one year later, the company increased the price of that platform, security leaks have been discovered, they performed in a none ethical way, or any other reason. Those tools usually do not push too much in exporting capabilities, which can carry a huge effort to transfer the full documentation database to an other tool.<br/>Documentor works on well established open-source and public protocols, allowing documentation to be transferred to any other support. The project keep all the documentation together within it versioning repository, and an XML or XSLT script can be created to transform the documentation to any format. Also, the tool is open-source, thus the possibility of a none-ethical or expensive company behind does not exists.</li>
+		<li><b>Clear place to locate documentation about specific code:</b><br/>TODO</li>
+		<li><b>Facilitate templates and structure:</b><br/>TODO</li>
+		</ul>
+		</header-2>
+		<header-2 title="Limitations of using Documentor">
+		<p>No solution is perfect, and this approach is not an exception. Following are some expected limitations while using this mechanism:</p>
+		<ul>
+		<li><b>Documentation in XML format:</b><br/> -- Need to learn xml to write the doc, less readable documentation while writting.</li>
+		<li><b>Moving code requires to manage documentation too:</b><br/>TODO -- moving a code file, require to care moving documentation file to keep structure</li>
+		<li><b>No clear connection between the files:</b><br/>TODO -- Navigation between classes is not convenient as it is now. Adding links has the risk to be broken</li>
+		</ul>
+		</header-2>
+	</header-1>
+
+	<header-1 title="Tags">
+	<p>Following are tags accepted by default by the xslt file:</p>
+	<ul>
+	<li><b>document:</b></li>
+	<li><b>title:</b></li>
+	<li><b>author:</b></li>
+	<li><b>version:</b></li>
+	<li><b>dictionary:</b></li>
+	<li><b>glossary:</b></li>
+	<li><b>term:</b>name</li>
+	<li><b>index:</b></li>
+	<li><b>header-1:</b>title</li>
+	<li><b>header-2:</b>title</li>
+	<li><b>header-3:</b>title</li>
+	<li><b>header-4:</b>title</li>
+	<li><b>ul:</b></li>
+	<li><b>li:</b></li>
+	<li><b>br:</b></li>
+	<li><b>p:</b></li>
+	<li><b>b:</b></li>
+	<li><b>code:</b>lang title</li>
+	<li><b>image:</b>src alt title</li>
+	</ul>
+	</header-1>
+</document>
