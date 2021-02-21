@@ -24,6 +24,7 @@
 
 #include <QApplication>
 #include <QCloseEvent>
+#include <QDir>
 #include <QString>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QMenu>
@@ -214,7 +215,7 @@ void Documentor::onUpdateTimeout()
 		}
 		else
 		{
-			m_query.setQuery(QUrl("./documentation.xsl"));
+			m_query.setQuery(QUrl("./xslt/documentation.xsl"));
 			m_query.evaluateTo(&out);
 		}
 	}
@@ -225,9 +226,9 @@ void Documentor::onUpdateTimeout()
 	// xsl:number no implemented, use keys to implement it
 	out = headerCounting(out);
 
-	
+    
 	m_uiCenterPtr->browser->setContent(QByteArray::fromStdString(out.toStdString()),"text/html", 
-	    QUrl::fromLocalFile("./"));
+	    QUrl::fromLocalFile(QDir("./").absolutePath()));
 	
 	if constexpr (OUTPUT_TO_FILE) // for debuging
 	{

@@ -17,7 +17,7 @@
 # Author: Adrian Maire escain (at) gmail.com
 #
 
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.13)
 cmake_policy( SET CMP0076 NEW )
 
 project("EscainDocumentor")

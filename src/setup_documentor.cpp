@@ -20,7 +20,6 @@
 #include "documentor.hpp"
 
 #include <QWebEngineSettings>
-#include <QWebEngineProfile>
 #include <QWebEngineView>
 
 #include "ui_center.h"
@@ -39,8 +38,6 @@ void Documentor::setupGui()
 	
 	// Web engine settings
 	QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::PluginsEnabled, false);
-	QWebEngineSettings::defaultSettings()->setAttribute(QWebEngineSettings::DnsPrefetchEnabled, false);
-	QWebEngineProfile::defaultProfile()->setUseForGlobalCertificateVerification();
 	
 	// Set font for the editor
 	QFont font = m_uiCenterPtr->textEditor->font();
