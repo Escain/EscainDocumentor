@@ -19,12 +19,18 @@
 
 #include "file_manager.hpp"
 
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QMessageBox>
 #include <QUrl>
 
 namespace Escain
 {
+
+FileManager::FileManager(QObject* parent)
+    : QObject(parent)
+{
+}
 
 bool FileManager::onOpenFile(const std::string& file)
 {
@@ -53,7 +59,6 @@ bool FileManager::onOpenFile(const std::string& file)
 			nUrl.setUrl( QString::fromStdString(file) );
 		}
 		
-		// If full URL is specificed, remove scheme "File::".
 		std::ifstream fileStream;
 		fileStream.open(nUrl.url().toStdString() , std::ios::in | std::ios::binary);
 
@@ -153,21 +158,44 @@ bool FileManager::onSaveAsFile()
 
 bool FileManager::onCloseFile()
 {
+	bool closeFile = false;
 	if (m_saved)
 	{
-		return true;
+		closeFile = true;
+	}
+	else
+	{
+		QMessageBox msg;
+		msg.setText(tr("Do you want to save this document?"));
+		msg.setStandardButtons( QMessageBox::Yes |QMessageBox::No | QMessageBox::Cancel);
+		msg.setDefaultButton( QMessageBox::Yes);
+
+		int ret = msg.exec();
+		if (ret==QMessageBox::Yes)
+		{
+			closeFile = onSaveFile();
+		}
+		else if (ret==QMessageBox::Cancel)
+		{
+			closeFile = false;
+		}
+		else
+		{
+			closeFile = true;
+		}
 	}
 
-	QMessageBox msg;
-	msg.setText(tr("Do you want to save this document?"));
-	msg.setStandardButtons( QMessageBox::Yes |QMessageBox::No | QMessageBox::Cancel);
-	msg.setDefaultButton( QMessageBox::Yes);
+	if (closeFile)
+	{
+		// Make no file is the current
+		m_currentOpenFile = "";
+		// No need to save the current file
+		setIsSaved(true);
+		// Empty current content
+		emit clearContent();
+	}
 
-	int ret = msg.exec();
-	if (ret==QMessageBox::Yes) return onSaveFile();
-	else if (ret==QMessageBox::Cancel) return false;
-
-	return true;
+	return closeFile;
 }
 
 
@@ -232,6 +260,30 @@ bool FileManager::onNewFile()
 	}
 
 	return createNew;
+}
+
+bool FileManager::openArgumentFilename(const QCoreApplication& app)
+{
+	const auto args = app.arguments();
+	for (int i=0; i<args.size(); ++i)
+	{
+		if (0==i) continue; // skip application path
+		
+		QUrl nUrl( args[i] );
+		
+		std::ifstream fileStream;
+		fileStream.open(nUrl.url().toStdString() , std::ios::in | std::ios::binary);
+	
+		if (fileStream)
+		{
+			m_currentOpenFile = nUrl.url().toStdString();
+			emit loadContentFrom(fileStream);
+			setIsSaved(true);
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 }

@@ -1,0 +1,8 @@
+<RCC>
+	<qresource prefix="/">
+		<file alias="style.css">css/style.css</file>
+		<file alias="documentation.xsl">xslt/documentation.xsl</file>
+		<file alias="escain_documentor.png">escain_documentor.png</file>
+	</qresource>
+</RCC>
+ 

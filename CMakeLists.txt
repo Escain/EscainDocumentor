@@ -59,7 +59,7 @@ SetWarningLevel(${TARGET})
 
 # Add UIS
 qt5_wrap_ui( UI_HEADERS "src/center.ui" )
-#qt5_add_resources( UI_RESOURCES "resources.qrc" )
+qt5_add_resources( UI_RESOURCES "src/resources.qrc" )
 
 #Build this project
 set ( SOURCES 
@@ -67,14 +67,15 @@ set ( SOURCES
 	src/documentor.cpp 
 	src/file_manager.cpp
 	src/setup_documentor.cpp
-	
+	${UI_RESOURCES}
+	src/resources.qrc
 	src/center.ui 
 	)
 
 set ( HEADERS 
 	src/documentor.hpp 
+	src/escain_web_engine.hpp
 	src/file_manager.hpp
-	
 	${UI_HEADERS}
 	)
 
