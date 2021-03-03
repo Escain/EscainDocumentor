@@ -44,14 +44,18 @@ namespace Escain
 	public:
 		explicit Documentor(QWidget *parent = nullptr);
 		virtual ~Documentor();
+		
+		/// Open a file, used to open the path given by argument
+		bool openFile(const QCoreApplication& app);
 
 	public slots:
 		/// Called periodically to update the Web View with editor content
 		void onUpdateTimeout();
 		
-		static QString headerCounting( const QString& ); // implement xsl::number, not present in QXmlQuery
-		
 	private:
+		/// implement xsl::number, not present in QXmlQuery
+		static QString headerCounting( const QString& );
+		
 		/// Override to manage saving before to close
 		void closeEvent(QCloseEvent *event);
 		
@@ -63,6 +67,8 @@ namespace Escain
 		QXmlQuery m_query; // XSLT processing
 		std::unique_ptr<Ui::documentorCenter> m_uiCenterPtr; //UI for center view (forward declared)
 		QTime m_lastUpdatedTime; //last timestamp the web view was updated
+		QString m_documentXslt;
+		float m_zoomFactor=1.0;
 
 		virtual void setupMenu();
 		virtual void setupGui();

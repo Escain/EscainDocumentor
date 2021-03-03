@@ -38,7 +38,7 @@ omit-xml-declaration="yes"-->
 <head>
 	<title><xsl:value-of select="title[1]/text()"/></title>
 	<meta charset="UTF-8"/>	
-	<link rel="stylesheet" type="text/css" href="./EscainDocumentor/css/style.css"/>
+	<link rel="stylesheet" type="text/css" href="qrc:/style.css"/>
 </head>
 <body>
 <article>
@@ -82,6 +82,14 @@ with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A cop
 		<li><xsl:apply-templates/></li>
 	</xsl:for-each>
 	</ul>
+</xsl:template>
+
+<xsl:template match="ol">
+	<ol>
+	<xsl:for-each select="li">
+		<li><xsl:apply-templates/></li>
+	</xsl:for-each>
+	</ol>
 </xsl:template>
 
 <xsl:template match="header-2">

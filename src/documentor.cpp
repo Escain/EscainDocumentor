@@ -53,6 +53,9 @@ Documentor::Documentor(QWidget *parent)
 	setupMenu();
 	setupGui();
 	
+	m_uiCenterPtr->horizontalSplitter->setStretchFactor(0, 0);
+	m_uiCenterPtr->horizontalSplitter->setStretchFactor(1, 100);
+	
 	connect(&m_fileManager, &FileManager::clearContent, [this]()
 	{
 		m_uiCenterPtr->textEditor->setText("");
@@ -93,10 +96,27 @@ Documentor::Documentor(QWidget *parent)
 	    &QTextDocument::contentsChanged, [this](){ contentChanged(); });
 	
 	onUpdateTimeout();
+	
+	// Pre-load xslt
+	QFile file(":/documentation.xsl");
+	if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+	{
+		qDebug() << "Could not open resource xslt";
+	}
+	else
+	{
+		m_documentXslt = file.readAll();
+	}
 }
 
 Documentor::~Documentor()
 {
+}
+
+
+bool Documentor::openFile(const QCoreApplication& app)
+{
+	return m_fileManager.openArgumentFilename(app);
 }
 
 void Documentor::contentChanged()
@@ -215,7 +235,7 @@ void Documentor::onUpdateTimeout()
 		}
 		else
 		{
-			m_query.setQuery(QUrl("./xslt/documentation.xsl"));
+			m_query.setQuery(m_documentXslt);
 			m_query.evaluateTo(&out);
 		}
 	}
@@ -226,9 +246,17 @@ void Documentor::onUpdateTimeout()
 	// xsl:number no implemented, use keys to implement it
 	out = headerCounting(out);
 
-    
-	m_uiCenterPtr->browser->setContent(QByteArray::fromStdString(out.toStdString()),"text/html", 
-	    QUrl::fromLocalFile(QDir("./").absolutePath()));
+	if (m_fileManager.getCurrentlyOpenPath().empty())
+	{
+		m_uiCenterPtr->browser->setContent(QByteArray::fromStdString(out.toStdString()),"text/html", 
+		    QUrl::fromLocalFile(QFileInfo("~/").absolutePath()));
+	}
+	else
+	{
+		QFileInfo curFile(m_fileManager.getCurrentlyOpenPath().c_str());
+		m_uiCenterPtr->browser->setContent(QByteArray::fromStdString(out.toStdString()),"text/html", 
+		    QUrl::fromLocalFile(curFile.absoluteDir().absolutePath() + QDir::separator()));
+	}
 	
 	if constexpr (OUTPUT_TO_FILE) // for debuging
 	{

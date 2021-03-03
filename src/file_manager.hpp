@@ -24,6 +24,8 @@
 #include <string>
 #include <QObject>
 
+class QCoreApplication;
+
 namespace Escain
 {
 
@@ -52,7 +54,15 @@ public slots:
 	/// The user request a new file.
 	/// @return bool: if the operation was successful (e.g. false if canceled because file not saved)
 	bool onNewFile();
+	
+	/// Trigger the filePath to be open, used for argument-passed file
+	bool openArgumentFilename(const QCoreApplication& app);
 public:
+	explicit FileManager(QObject* parent=nullptr);
+	virtual ~FileManager() = default;
+	FileManager( const FileManager&) = delete;
+	FileManager& operator=( const FileManager&) = delete;
+	
 	/// The filter allows to see in the FileDialogBox those file which can be open/saved
 	void setFileExtensionFilter( const std::string& filter ){ m_fileFilter = filter; }
 	std::string getFileExtensionFilter() const { return m_fileFilter; }

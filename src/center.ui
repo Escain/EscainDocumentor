@@ -130,7 +130,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWebEngineView" name="browser" native="true">
+     <widget class="Escain::EscainWebEngine" name="browser" native="true">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
         <horstretch>0</horstretch>
@@ -144,9 +144,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QWebEngineView</class>
+   <class>Escain::EscainWebEngine</class>
    <extends>QWidget</extends>
-   <header location="global">qwebengineview.h</header>
+   <header>src/escain_web_engine.hpp</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

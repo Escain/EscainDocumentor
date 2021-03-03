@@ -20,17 +20,21 @@
 #include <QtWidgets/QApplication>
 
 #include "documentor.hpp"
+#include <QDebug>
 
 int main(int argc, char** argv)
 {
 	QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar); //randomly not working otherwise on macOS
 	QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 	QApplication app(argc, argv);
-	app.setWindowIcon(QIcon("./escain_documentor.png"));
+
+	app.setWindowIcon(QIcon(":/escain_documentor.png"));
 	
 	Escain::Documentor window;
 	
 	window.show();
+	
+	window.openFile(app);
 
 	return app.exec();
 }
