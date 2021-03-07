@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 	
 	window.show();
 	
-	window.openFile(app);
+	window.openFile(app); // load filename passed as argument
 
 	return app.exec();
 }

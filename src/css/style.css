@@ -30,6 +30,7 @@ article
 .image
 {
 	max-width: 100%;
+	page-break-inside:avoid;
 }
 
 .image_cent
@@ -86,6 +87,38 @@ article
 	font-weight:bolder;
 }
 
+.section-1
+{
+	widows:10;
+	orphans:10;
+	margin:0;
+	padding:0;
+}
+
+.section-2
+{
+	widows:10;
+	orphans:10;
+	margin:0;
+	padding:0;
+}
+
+.section-3
+{
+	widows:10;
+	orphans:10;
+	margin:0;
+	padding:0;
+}
+
+.section-4
+{
+	widows:10;
+	orphans:10;
+	margin:0;
+	padding:0;
+}
+
 h1
 {
 	text-transform: uppercase;
@@ -94,6 +127,15 @@ h1
 	color: #2185C5;
 	margin:30pt 0 15pt 0;
 	text-align: left;
+	orphans: 3;
+	widows: 3;
+}
+
+.page-break
+{
+	page-break-after: always;
+	display: block;
+	text-align: right;
 }
 
 h2
@@ -104,6 +146,8 @@ h2
 	color: #7ECEFD;
 	margin:20pt 0 10pt 0;
 	text-align: left;
+	orphans: 3;
+	widows: 3;
 }
 
 h3
@@ -113,6 +157,8 @@ h3
 	margin-bottom:10pt;
 	font-weight: bold;
 	text-align: left;
+	orphans: 3;
+	widows: 3;
 }
 
 h4
@@ -122,6 +168,8 @@ h4
 	margin-bottom:0pt;
 	font-weight: bold;
 	text-align: left;
+	orphans: 3;
+	widows: 3;
 }
 
 hr
@@ -147,11 +195,13 @@ hr
 	color:rgb(0,32,0);
 }
 
-ul
+ul ol
 {
 	list-style-type:circle;
 	margin-left:20px;
 	color: rgb(64,64,64);
+	orphans: 5;
+	widows: 5;
 }
 li
 {
@@ -168,6 +218,8 @@ li
 	text-align:left;
 	padding: 10px 0;
 	border: 1px solid rgb(236,236,236);
+	orphans: 5;
+	widows: 5;
 }
 .code_title
 {
@@ -197,7 +249,8 @@ li
 	font-size:16pt;
 	font-weight:bold;
 	margin:30px 0px 30px 0;
-	
+	orphans: 5;
+	widows: 5;
 }
 
 .index a, index a:active

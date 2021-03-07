@@ -21,6 +21,7 @@
 #define file_manager_h
 
 #include <fstream>
+#include <functional>
 #include <string>
 #include <QObject>
 
@@ -75,6 +76,13 @@ public:
 	/// Return if the current file is at a saved state
 	bool getIsSaved() const { return m_saved; }
 	
+	/// Static function to get a pathname and save some content
+	/// callback is eventually called to save the file
+	/// filter is used to set the dialogs filters of accepted extensions
+	/// it return the used filename in case it succeeded.
+	using ExtractCallback = std::function<bool( std::ofstream& )>;
+	static std::optional<std::string> exportFilename( const ExtractCallback& callback, const std::string& filter);
+	
 signals:
 	/// Signal indicate to load the given file, and discard any previous content
 	bool loadContentFrom( std::ifstream& file ) const;
@@ -85,7 +93,7 @@ signals:
 
 private:
 	/// Manage/messages when unable to save. Return if the user want to try again another file
-	bool unableToSave() const;
+	static bool unableToSave();
 	
 	std::string m_currentOpenFile;
 	std::string m_fileFilter = "XML (*.xml)";

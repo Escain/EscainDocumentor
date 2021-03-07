@@ -21,70 +21,40 @@
 #define EscainWebEngine_H
 
 #include <array>
+#include <fstream>
 #include <qwebengineview.h>
-#include <QWheelEvent>
-#include <QDebug>
-#include <QAction>
+
+class QWheelEvent;
 
 namespace Escain
 {
-	class EscainWebEngine : public QWebEngineView
-	{
-		Q_OBJECT
-	public:
-		explicit EscainWebEngine(QWidget* parent=nullptr): QWebEngineView( parent )
-		{
-			setZoomFactor(m_zoomPos);
-		}
-		virtual ~EscainWebEngine() = default;
-	private:
+
+/// This class extens the qwebengineview adding features needed for this
+///  project, like mouse-wheel zooming, pdf export, etc.
+class EscainWebEngine : public QWebEngineView
+{
+	Q_OBJECT
+public:
+	explicit EscainWebEngine(QWidget* parent=nullptr);
+	virtual ~EscainWebEngine() = default;
 	
-		
-		const std::array<double,28>& getAvailableZooms() const
-		{
-			static const std::array<double,28> zooms {30.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0, 
-				    110.0, 120.0, 130.0, 140.0, 150.0, 160.0, 170.0, 180.0, 190.0, 200.0, 210.0, 
-				    220.0, 230.0, 240.0, 250.0, 260.0, 270.0, 280.0, 290.0, 300.0};
-			
-			return zooms;
-		}
-		void setZoom( size_t pos)
-		{
-			const auto& zooms = getAvailableZooms();
-			
-			if (pos > zooms.size())
-			{
-				pos = zooms.size()-1;
-			}
-			
-			setZoomFactor(zooms[pos]/100.0);
-		}
-		void wheelEvent( QWheelEvent* event)
-		{
-			if(event->modifiers().testFlag(Qt::ControlModifier))
-			{
-				const auto& zooms = getAvailableZooms();
-				if (event->angleDelta().y() > 0.1 && m_zoomPos+1 < zooms.size())
-				{
-					m_zoomPos++;
-				}
-				else if(event -> angleDelta().y() < 0.1 && m_zoomPos>0)
-				{
-					m_zoomPos--;
-				}
-				
-				setZoom(m_zoomPos);
-				event->accept();
-				
-				return;
-			}
-			
-			// Ignore other events
-			event->ignore();
-		}
-		
-		size_t m_zoomPos = 7;
-	};
+	/// Produce a PDF from the current document, for exporting
+	/// return if the export could be done
+	bool printToPdf( std::ofstream& filename);
+private:
+
+	/// Get the list of available zooms, as a proportion: 1.0, 1.2 (120%)...
+	const std::array<double,28>& getAvailableZooms() const;
+	/// Retrieve the zoom at specific pos in available zooms.
+	double getZoomAt( size_t pos) const;
+	/// Set a specific zoom
+	void setZoom( double zoom);
+	/// Override the wheel event
+	void wheelEvent( QWheelEvent* event);
+	
+	size_t m_zoomPos = 7;
+};
+
 }
 
 #endif // EscainWebEngine_H

@@ -64,18 +64,21 @@ qt5_add_resources( UI_RESOURCES "src/resources.qrc" )
 #Build this project
 set ( SOURCES 
 	src/main.cpp 
-	src/documentor.cpp 
+	src/documentor.cpp
+	src/escain_web_engine.cpp
 	src/file_manager.cpp
 	src/setup_documentor.cpp
-	${UI_RESOURCES}
-	src/resources.qrc
+	
 	src/center.ui 
+	src/resources.qrc
+	${UI_RESOURCES}
 	)
 
 set ( HEADERS 
 	src/documentor.hpp 
 	src/escain_web_engine.hpp
 	src/file_manager.hpp
+	
 	${UI_HEADERS}
 	)
 
@@ -94,4 +97,3 @@ if(APPLE)
 	set(CMAKE_OSX_DEPLOYMENT_TARGET "10.14" CACHE STRING "Minimum OS X deployment version")
 	SET_TARGET_PROPERTIES(${TARGET} PROPERTIES MACOSX_BUNDLE TRUE)
 endif()
-

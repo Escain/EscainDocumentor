@@ -1,22 +1,3 @@
-<!--
-This file is part of Escain Documentor tool
-
-Escain Documentor is free software: you can redistribute it and/or modify 
-it under ther terms of the GNU General Public License as published by 
-the Free Software Foundation, either version 3 of the License, or 
-(at your option) any later version.
-
-Escain Documentor is distributed in the hope that it will be useful, 
-but WITHOUT ANY WARRANTY; without even the implied warranty of 
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the 
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License 
-along with Escain Documentor. If not, see <https://www.gnu.org/licenses/>.
-
-Author: Adrian Maire escain (at) gmail.com
--->
-
 <document>
 	<title>Documentor</title>
 	<version>0.1</version>
@@ -59,6 +40,12 @@ Author: Adrian Maire escain (at) gmail.com
 		<li><b>No clear connection between the files:</b><br/>TODO -- Navigation between classes is not convenient as it is now. Adding links has the risk to be broken</li>
 		</ul>
 		</header-2>
+		<header-2 title="FAQ">
+		<ul>
+		<li><b>Why XML, over other formats like mark-down or latex?:</b><br/>Markdown and Latex are good solutions too, and there are a certain number of tools available for those formats. XML+XSLT however provide a certain number of benefits at the cost of a less readable source-code. XML makes it parsing and automatic transformation very simple, through a number of libraries available for most languages (for example, it's trivial to add new tags for custom purposes, or</li>
+		<li><b>Why not directly HTML instead of XML?:</b><br/></li>
+		</ul>
+		</header-2>
 	</header-1>
 
 	<header-1 title="Tags">
@@ -77,13 +64,24 @@ Author: Adrian Maire escain (at) gmail.com
 	<li><b>header-3:</b>title</li>
 	<li><b>header-4:</b>title</li>
 	<li><b>ul:</b></li>
-    <li><b>ol:</b></li>
 	<li><b>li:</b></li>
 	<li><b>br:</b></li>
 	<li><b>p:</b></li>
 	<li><b>b:</b></li>
 	<li><b>code:</b>lang title</li>
 	<li><b>image:</b>src alt title</li>
+	</ul>
+	</header-1>
+
+
+	<header-1 title="TODO">
+	<ul>
+	<li>Add tags for tables</li>
+	<li>Support multiple authors</li>
+	<li>Free license, replacing default one if needed</li>
+	<li>Searching options, in both code and content.</li>
+	<li>Mapping between content to code?</li>
+	<li>Send feedback/help menu</li>
 	</ul>
 	</header-1>
 </document>

@@ -103,7 +103,7 @@ bool FileManager::onSaveFile()
 	return result;
 }
 
-bool FileManager::unableToSave() const
+bool FileManager::unableToSave()
 {
 	QMessageBox msg;
 	msg.setText(tr("I could not save in the current file. Sorry!"));
@@ -114,45 +114,16 @@ bool FileManager::unableToSave() const
 
 bool FileManager::onSaveAsFile()
 {
-	bool result = false;
-	bool stopTrying = false;
 
-	do
+	auto result = exportFilename( [this]( std::ofstream& of)->bool{ return extractContentTo(of);} , m_fileFilter);
+	
+	if (!result.has_value())
 	{
-		QFileDialog dialog;
-
-		dialog.setFileMode( QFileDialog::AnyFile );
-		dialog.setAcceptMode(QFileDialog::AcceptSave);
-		dialog.setNameFilter(QString::fromStdString(m_fileFilter));
-		if(!dialog.exec() || dialog.selectedUrls().size()==0)
-		{
-			result = false; // not saved
-			stopTrying = true; // do not try again
-		}
-		else
-		{
-			QUrl url= dialog.selectedUrls()[0];
-			QUrl nUrl = url.toLocalFile();
-
-			std::ofstream fileStream;
-			fileStream.open(nUrl.url().toStdString() , std::ios::out | std::ios::binary);
-
-			if (fileStream)
-			{
-				m_currentOpenFile = nUrl.url().toStdString();
-				result = emit extractContentTo( fileStream);
-				stopTrying=true; // do not try again
-			}
-			else if (!unableToSave())
-			{
-				stopTrying = true;
-			}
-		}
-	} while( !stopTrying );
-
-	setIsSaved(result);
-
-	return result;
+		return false;
+	}
+	
+	m_currentOpenFile = *result;
+	return true;
 }
 
 
@@ -189,10 +160,10 @@ bool FileManager::onCloseFile()
 	{
 		// Make no file is the current
 		m_currentOpenFile = "";
-		// No need to save the current file
-		setIsSaved(true);
 		// Empty current content
 		emit clearContent();
+		// No need to save the current file
+		setIsSaved(true);
 	}
 
 	return closeFile;
@@ -253,10 +224,10 @@ bool FileManager::onNewFile()
 	{
 		// Make no file is the current
 		m_currentOpenFile = "";
-		// No need to save the current file
-		setIsSaved(true);
 		// Empty current content
 		emit clearContent();
+		// No need to save the current file
+		setIsSaved(true);
 	}
 
 	return createNew;
@@ -283,7 +254,54 @@ bool FileManager::openArgumentFilename(const QCoreApplication& app)
 		}
 	}
 	
+	// clear the page, to a new document.
+	emit clearContent();
+	// No need to save the current file
+	setIsSaved(true);
+	
 	return false;
+}
+
+std::optional<std::string> FileManager::exportFilename( const ExtractCallback& callback, const std::string& filter)
+{
+	bool result = false;
+	bool stopTrying = false;
+	std::string fileName;
+
+	do
+	{
+		QFileDialog dialog;
+
+		dialog.setFileMode( QFileDialog::AnyFile );
+		dialog.setAcceptMode(QFileDialog::AcceptSave);
+		dialog.setNameFilter(QString::fromStdString(filter));
+		if(!dialog.exec() || dialog.selectedUrls().size()==0)
+		{
+			result = false; // not saved
+			stopTrying = true; // do not try again
+		}
+		else
+		{
+			QUrl url= dialog.selectedUrls()[0];
+			QUrl nUrl = url.toLocalFile();
+
+			std::ofstream fileStream;
+			fileStream.open(nUrl.url().toStdString() , std::ios::out | std::ios::binary);
+
+			if (fileStream)
+			{
+				fileName = nUrl.url().toStdString();
+				result = emit callback( fileStream);
+				stopTrying=true; // do not try again
+			}
+			else if (!unableToSave())
+			{
+				stopTrying = true;
+			}
+		}
+	} while( !stopTrying );
+
+	return result ? std::optional(fileName) : std::nullopt;
 }
 
 }
