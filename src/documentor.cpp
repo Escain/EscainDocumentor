@@ -58,7 +58,13 @@ Documentor::Documentor(QWidget *parent)
 	
 	connect(&m_fileManager, &FileManager::clearContent, [this]()
 	{
-		m_uiCenterPtr->textEditor->setText("");
+		m_uiCenterPtr->textEditor->setText(
+R"delimiter(<document>
+	<title>Document</title>
+	<header-1 title="Title">
+		<p>Some text <b> in bold </b></p>
+	</header-1>
+</document>)delimiter");
 		onUpdateTimeout();
 	});
 	
@@ -287,6 +293,13 @@ void Documentor::setupMenu()
 			QApplication::quit();
 		}
 	})->setShortcut(tr("Ctrl+Q"));
+	
+	QMenu *pdfMenu = menuBar()->addMenu(tr("&Pdf"));
+	pdfMenu->addAction(tr("Export PDF"), this, [this]()
+	{
+		FileManager::exportFilename( [this]( std::ofstream& os)->bool
+		{ return m_uiCenterPtr->browser->printToPdf(os); }, "PDF (*.pdf)");
+	})->setShortcut(tr("Ctrl+E"));
 }
 
 }

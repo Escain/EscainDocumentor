@@ -56,10 +56,15 @@ with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A cop
 	<xsl:apply-templates select='index | glossary'/>
 	<xsl:for-each select="*">
 		<xsl:if test="name()='header-1'">
+			<article class="section-1">
 			<h1>8dl912_numberKey1 <xsl:value-of select="@title"/>
 				<a><xsl:attribute name="id"><xsl:value-of select="translate(@title, ' ','')"/></xsl:attribute><xsl:comment/></a>			
 			</h1>
 			<xsl:apply-templates/>
+			</article>
+		</xsl:if>
+		<xsl:if test="name()='page-break'">
+			<div class="page-break"><br/><br/><i>-- Continuing in next page --</i><!--comment--></div>
 		</xsl:if>
 		<!--<xsl:if test="name()='index'">
 			<xsl:apply-templates/>
@@ -92,26 +97,36 @@ with no Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts. A cop
 	</ol>
 </xsl:template>
 
+<xsl:template match="page-break">
+	<div class="page-break"><br/><br/><i>-- Continuing in next page --</i><!--comment--></div>
+</xsl:template>
+
 <xsl:template match="header-2">
+	<article class="section-2">
 	<h2>8dl912_numberKey2 <xsl:value-of select="@title"/>
 	<a><xsl:attribute name="id"><xsl:value-of select="translate(@title, ' ','')"/></xsl:attribute><xsl:comment/></a>
 	</h2>
 	<hr/>
 	<xsl:apply-templates/>
+	</article>
 </xsl:template>
 
 <xsl:template match="header-3">
+	<article class="section-3">
 	<h3><xsl:value-of select="@title"/>:
 	<a><xsl:attribute name="id"><xsl:value-of select="translate(@title, ' ','')"/></xsl:attribute><xsl:comment/></a>
 	</h3>
 	<xsl:apply-templates/>
+	</article>
 </xsl:template>
 
 <xsl:template match="header-4">
+	<article class="section-4">
 	<h4><xsl:value-of select="@title"/>:
 	<a><xsl:attribute name="id"><xsl:value-of select="translate(@title, ' ','')"/></xsl:attribute><xsl:comment/></a>
 	</h4>
 	<xsl:apply-templates/>
+	</article>
 </xsl:template>
 
 <xsl:template match="code">
