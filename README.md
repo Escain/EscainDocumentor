@@ -1,2 +1,2 @@
 # EscainDocumentor
-Tool to edit documentation in commonMark format inside software versioning repositories.
+Tool to edit documentation in xml format inside software versioning repositories.
